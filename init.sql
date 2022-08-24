@@ -2,14 +2,6 @@
 
 BEGIN;
 
-
-CREATE DOMAIN "posint" AS int
-	CHECK (VALUE >= 0);
-
-CREATE DOMAIN "url" AS text
-	CHECK ((VALUE ~ '^http(s)?:\/\/?[\w.-]+?(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&''\(\)\*\+,;=.]+'));
-
-
 /*******************************
 *       TYPE DE FORMATION
 ********************************/
@@ -102,7 +94,7 @@ CREATE UNIQUE INDEX "unique_block" ON "block" ("name", ("deleted_at" IS NULL)) W
 ********************************/
 CREATE TABLE "season" (
     "id" integer NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "number" posint NOT NULL,
+    "number" int NOT NULL,
     "title" text NOT NULL,
     -- Présentation apprenants
     "information" text,
@@ -123,7 +115,7 @@ CREATE UNIQUE INDEX "unique_season" ON "season" ("title", "block_id", ("deleted_
 ********************************/
 CREATE TABLE "episode" (
     "id" integer NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    "number" posint NOT NULL,
+    "number" int NOT NULL,
     "title" text NOT NULL,
     -- Présentation apprenants
     "information" text,
@@ -184,7 +176,7 @@ CREATE TABLE "sequence" (
     -- récapitulatif à destination des apprenants en fin d'épisode
     "summary" text,
     -- URL du support
-    "url" url,
+    "url" text,
     -- Niveau de difficulté
     "level" integer,
     -- Type de séquence
@@ -283,7 +275,7 @@ CREATE TABLE "notion" (
     "id" integer NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "label" text NOT NULL,
     "description" text,
-    "url" url,
+    "url" text,
     "created_at" timestamptz DEFAULT now() NOT NULL,
     "updated_at" timestamptz,
     "deleted_at" timestamptz
